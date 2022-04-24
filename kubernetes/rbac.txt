@@ -1,0 +1,37 @@
+openssl genrsa -out emp.key
+
+openssl req -new -key emp.key -out emp.csr
+
+openssl x509 -req -in emp.csr -CA ~/.minikube/ca.crt -CAkey ~/.minikube/ca.key -CAcreateserial -out emp.crt -days 100
+
+kubectl config set-credentials emp --client-certificate=emp.crt --client-key=emp.key
+
+kubectl config set-context emp-context --cluster=minikube --namespace=default --user=emp
+
+#role yaml file
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: custom-role
+rules:
+ - apiGroups: [""]
+   resources: ["pods", "deployments", "namespaces", "services"]
+   verbs: ["get", "watch", "list", "create", "delete"]
+
+#role-binding yaml file
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: sample-role-binding
+subjects:
+ - kind: User
+   name: emp
+   apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: custom-role
+  apiGroup: rbac.authorization.k8s.io 

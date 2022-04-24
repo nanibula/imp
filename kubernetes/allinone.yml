@@ -1,0 +1,37 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata: 
+  name: sample-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: sample-pod
+      labels:
+        app: nginx
+    spec:
+      containers:
+       - name: sample-container
+         image: nginx
+         ports:
+          - containerPort: 80
+         volumeMounts:
+          - name: local-vol
+            mountPath: /temp/local/
+          - name: host-vol
+            mountPath: /temp/host/
+          - name: persistent-vol
+            mountPath: /temp/persistent/
+      volumes:
+       - name: local-vol
+         emptyDir: {}
+       - name: host-vol
+         hostPath: 
+           path: /home/nani/Desktop/samp/
+       - name: persistent-vol
+         persistentVolumeClaim:
+           claimName: sample-pvc  

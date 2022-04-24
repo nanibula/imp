@@ -1,0 +1,21 @@
+---
+kind: ReplicaSet
+apiVersion: apps/v1
+metadata:
+  name: sample-rs
+spec:
+  replicas: 1
+  selector:
+   matchLabels:
+    name: sample
+  template:
+    metadata:
+      name: sample-pod
+      labels:
+        name: sample
+    spec:
+      containers:
+       - name: sample-container
+         image: nginx
+         ports:
+          - containerPort: 80 

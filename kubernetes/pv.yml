@@ -1,0 +1,25 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: sample-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 0.5Gi
+  accessModes:
+   - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  hostPath:
+    path: /home/nani/Desktop/samp/
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sample-pvc
+spec:
+  accessModes:
+   - ReadWriteOnce
+  resources:
+    requests:
+      storage: 0.01Gi

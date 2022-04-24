@@ -1,0 +1,14 @@
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: sample-pod
+  annotations:
+    description: this is sample pod
+spec:
+  containers:
+   - name: sample-container
+     image: nginx
+     ports:
+      - containerPort: 80
+  

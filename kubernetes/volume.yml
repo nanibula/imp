@@ -1,0 +1,32 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sample-dep-vol
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      work: nginx
+  template:
+    metadata:
+      name: sample-pod
+      labels:
+        work: nginx
+    spec:
+      containers:
+       - name: sample-con
+         image: nginx
+         ports:
+          - containerPort: 80
+         volumeMounts:
+          - name: local-vol
+            mountPath: /temp/local/
+          - name: host-vol
+            mountPath: /temp/host/
+      volumes:
+       - name: local-vol    
+         emptyDir: {}
+       - name: host-vol
+         hostPath:
+           path: /home/nani/Desktop/sample/
